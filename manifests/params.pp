@@ -22,13 +22,16 @@ class nginx::params {
   $nx_confd_purge             = false
   $nx_worker_processes        = 1
   $nx_worker_connections      = 1024
+  $nx_worker_rlimit_nofile    = undef
   $nx_types_hash_max_size     = 1024
   $nx_types_hash_bucket_size  = 512
   $nx_multi_accept            = off
   $nx_events_use         = false # One of [kqueue|rtsig|epoll|/dev/poll|select|poll|eventport] or false to use OS default
+  $nx_default_type            = 'application/octet-stream'
   $nx_sendfile                = on
   $nx_keepalive_timeout       = 65
   $nx_tcp_nodelay             = on
+  $nx_tcp_nopush              = off
   $nx_gzip                    = on
   $nx_server_tokens           = on
   $nx_spdy                    = off

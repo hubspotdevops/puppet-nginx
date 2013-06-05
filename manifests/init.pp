@@ -40,15 +40,25 @@ class nginx (
   $proxy_cache_max_size   = $nginx::params::nx_proxy_cache_max_size,
   $proxy_cache_inactive   = $nginx::params::nx_proxy_cache_inactive,
   $configtest_enable      = $nginx::params::nx_configtest_enable,
-  $service_restart        = $nginx::params::nx_service_restrart,
+  $service_restart        = $nginx::params::nx_service_restart,
   $mail                   = $nginx::params::nx_mail,
-  $server_tokens          = $nginx::params::nx_server_tokens
+  $server_tokens          = $nginx::params::nx_server_tokens,
+  $logdir                 = $nginx::params::nx_logdir,
+  $pkg_version            = $nginx::params::nx_pkg_version
 ) inherits nginx::params {
 
   include stdlib
 
   class { 'nginx::package':
+    pkg_version => $pkg_version,
     notify => Class['nginx::service'],
+  }
+
+  if $pkg_version == 'present' {
+    $nginx_version = $nginx::params::nx_nginx_version
+  } else {
+    $split_ver = split($pkg_version, '-')
+    $nginx_version = "$split_ver[0]"
   }
 
   class { 'nginx::config':
@@ -62,6 +72,8 @@ class nginx (
     proxy_cache_max_size  => $proxy_cache_max_size,
     proxy_cache_inactive  => $proxy_cache_inactive,
     confd_purge           => $confd_purge,
+    logdir                => $logdir,
+    nginx_version         => $nginx_version,
     require               => Class['nginx::package'],
     notify                => Class['nginx::service'],
   }

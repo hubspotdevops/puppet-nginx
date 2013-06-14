@@ -62,7 +62,7 @@ class nginx (
     $nginx_version = $nginx::params::nx_nginx_version
   } else {
     $split_ver = split($pkg_version, '-')
-    $nginx_version = "$split_ver[0]"
+    $nginx_version = $split_ver[0]
   }
 
   class { 'nginx::config':

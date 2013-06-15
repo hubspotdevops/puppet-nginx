@@ -15,7 +15,7 @@ http {
   include       /etc/nginx/mime.types;
   default_type  <%= @default_type %>;
 
-  access_log  <%= logdir %>/access.log;
+  access_log  <%= logdir %>/<%= @access_log %>;
 
   sendfile    <%= scope.lookupvar('nginx::params::nx_sendfile')%>;
 

@@ -55,6 +55,7 @@ class nginx (
   $mail                   = $nginx::params::nx_mail,
   $server_tokens          = $nginx::params::nx_server_tokens,
   $logdir                 = $nginx::params::nx_logdir,
+  $access_log             = $nginx::params::nx_access_log,
   $pkg_version            = $nginx::params::nx_pkg_version
 ) inherits nginx::params {
 
@@ -66,7 +67,7 @@ class nginx (
   }
 
   # XXX: We should have a fact that gets the version number by running
-  # `nginx -V`.  If the package is not installed set to high number 
+  # `nginx -V`.  If the package is not installed set to high number
   # otherwise use value reported by binary.  If $pkg_version is set to
   # 'present' we'll just use the fact value to set $.pkg_version.
   if $pkg_version == 'present' {

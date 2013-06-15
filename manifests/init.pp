@@ -56,6 +56,7 @@ class nginx (
   $server_tokens          = $nginx::params::nx_server_tokens,
   $logdir                 = $nginx::params::nx_logdir,
   $access_log             = $nginx::params::nx_access_log,
+  $error_log              = $nginx::params::nx_error_log,
   $pkg_version            = $nginx::params::nx_pkg_version
 ) inherits nginx::params {
 

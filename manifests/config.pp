@@ -40,6 +40,7 @@ class nginx::config(
   $types_hash_bucket_size = $nginx::params::nx_types_hash_bucket_size,
   $logdir                 = $nginx::params::nx_logdir,
   $access_log             = $nginx::params::nx_access_log,
+  $error_log              = $nginx::params::nx_error_log,
   $nginx_version          = $nginx::params::nx_nginx_version
 ) inherits nginx::params {
   File {

@@ -101,6 +101,8 @@ class nginx (
     proxy_http_version    => $proxy_http_version,
     confd_purge           => $confd_purge,
     logdir                => $logdir,
+    access_log            => $access_log,
+    error_log             => $error_log,
     nginx_version         => $nginx_version,
     require               => Class['nginx::package'],
     notify                => Class['nginx::service'],

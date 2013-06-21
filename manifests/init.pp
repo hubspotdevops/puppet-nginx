@@ -56,6 +56,8 @@ class nginx (
   $mail                   = $nginx::params::nx_mail,
   $server_tokens          = $nginx::params::nx_server_tokens,
   $logdir                 = $nginx::params::nx_logdir,
+  $access_log             = $nginx::params::nx_access_log,
+  $error_log              = $nginx::params::nx_error_log,
   $pkg_version            = $nginx::params::nx_pkg_version
 ) inherits nginx::params {
 
@@ -101,6 +103,8 @@ class nginx (
     proxy_http_version    => $proxy_http_version,
     confd_purge           => $confd_purge,
     logdir                => $logdir,
+    access_log            => $access_log,
+    error_log             => $error_log,
     nginx_version         => $nginx_version,
     require               => Class['nginx::package'],
     notify                => Class['nginx::service'],

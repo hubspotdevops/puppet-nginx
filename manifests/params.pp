@@ -72,6 +72,9 @@ class nginx::params {
     /(?i-mx:linux)/ => '/var/log/nginx',
   }
 
+  $nx_access_log              = 'access.log'
+  $nx_error_log               = 'error.log'
+
   $nx_pid = $::kernel ? {
     /(?i-mx:linux)/  => '/var/run/nginx.pid',
   }

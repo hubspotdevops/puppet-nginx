@@ -2,7 +2,7 @@ user <%= scope.lookupvar('nginx::config::nx_daemon_user') %>;
 worker_processes <%= worker_processes %>;
 <% if @worker_rlimit_nofile %>worker_rlimit_nofile <%= worker_rlimit_nofile %>;<% end %>
 
-error_log  <%= logdir %>/error.log;
+error_log  <%= logdir %>/<%= @error_log %>;
 pid        <%= scope.lookupvar('nginx::params::nx_pid')%>;
 
 events {
@@ -20,7 +20,7 @@ http {
   <% end -%>
   default_type  <%= @default_type %>;
 
-  access_log  <%= logdir %>/access.log;
+  access_log  <%= logdir %>/<%= @access_log %>;
 
   sendfile    <%= scope.lookupvar('nginx::params::nx_sendfile')%>;
 

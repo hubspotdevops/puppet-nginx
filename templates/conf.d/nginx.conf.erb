@@ -13,11 +13,10 @@ events {
 
 http {
   include       /etc/nginx/mime.types;
-  <% if @http_additional_array %>
-  <% @http_additional_array.each do |setting| -%>
-  <%= setting[0] %>   <%= setting[1] %>;
-  <% end -%>
-  <% end -%>
+
+<% if @http_cfg_prepend -%><% http_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
+  <%= key %> <%= value %>;<% end -%><% end -%>
+
   default_type  <%= @default_type %>;
 
   access_log  <%= logdir %>/<%= @access_log %>;
@@ -43,6 +42,10 @@ http {
 <% end -%>
 
   include /etc/nginx/conf.d/*.conf;
+
+<% if @http_cfg_append -%><% http_cfg_append.sort_by {|k,v| k}.each do |key,value| -%>
+  <%= key %> <%= value %>;<% end -%><% end -%>
+
 }
 <% if scope.lookupvar('nginx::mail') %>
 mail {

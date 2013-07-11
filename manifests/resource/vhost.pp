@@ -81,6 +81,8 @@ define nginx::resource::vhost (
     'index.html',
     'index.htm',
     'index.php'],
+  $logdir                 = $nginx::params::nx_logdir,
+  $access_log             = "${name}.${nginx::params::nx_logdir}",
   $server_name            = [$name],
   $www_root               = undef,
   $rewrite_www_to_non_www = false,
@@ -90,6 +92,7 @@ define nginx::resource::vhost (
   $try_files              = undef,
   $auth_basic             = undef,
   $auth_basic_user_file   = undef,
+  $vhost_cfg_prepend      = undef,
   $vhost_cfg_append       = undef,
   $include_files		  = undef
 ) {

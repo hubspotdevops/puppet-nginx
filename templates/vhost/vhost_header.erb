@@ -1,4 +1,8 @@
 server {
+<% if @vhost_cfg_prepend -%><% vhost_cfg_prepend.each do |key,value| -%>
+  <%= key %> <%= value %>;
+<% end -%><% end -%>
+
   listen                <%= listen_ip %>:<%= listen_port %> <% if @listen_options %><%= listen_options %><% end %>;
   <% # check to see if ipv6 support exists in the kernel before applying %>
   <% if ipv6_enable == 'true' && (defined? ipaddress6) %>

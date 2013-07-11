@@ -92,6 +92,7 @@ define nginx::resource::vhost (
   $try_files              = undef,
   $auth_basic             = undef,
   $auth_basic_user_file   = undef,
+  $vhost_cfg_prepend      = undef,
   $vhost_cfg_append       = undef,
   $include_files		  = undef
 ) {

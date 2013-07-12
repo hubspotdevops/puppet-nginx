@@ -15,7 +15,7 @@ http {
   include       /etc/nginx/mime.types;
 
 <% if @http_cfg_prepend -%><% http_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
-  <%= key %> <%= value %>;
+  <%= key %> <%= value %><% if key[-1,1] != '}' %>;<% end %>
 <% end -%><% end -%>
 
   default_type  <%= @default_type %>;
@@ -45,7 +45,7 @@ http {
   include /etc/nginx/conf.d/*.conf;
 
 <% if @http_cfg_append -%><% http_cfg_append.sort_by {|k,v| k}.each do |key,value| -%>
-  <%= key %> <%= value %>;
+  <%= key %> <%= value %><% if key[-1,1] != '}' %>;<% end %>
 <% end -%><% end -%>
 
 }

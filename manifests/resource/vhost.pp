@@ -82,7 +82,7 @@ define nginx::resource::vhost (
     'index.htm',
     'index.php'],
   $logdir                 = $nginx::params::nx_logdir,
-  $access_log             = "${name}.${nginx::params::nx_logdir}",
+  $access_log             = "${name}.log",
   $server_name            = [$name],
   $www_root               = undef,
   $rewrite_www_to_non_www = false,

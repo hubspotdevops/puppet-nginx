@@ -40,6 +40,8 @@
 #     the authentication realm.
 #   [*vhost_cfg_append*]        - It expects a hash with custom directives to
 #     put after everything else inside vhost
+#   [*ssl_cfg_append*]          - It expects a hash with custom directives to
+#     put after everything else inside the SSL vhost
 #   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
 #      rewrite to ssl
 #   [*include_files*] 		      - Adds include files to vhost
@@ -52,7 +54,7 @@
 #  nginx::resource::vhost { 'test2.local':
 #    ensure   => present,
 #    www_root => '/var/www/nginx-default',
-#    ssl      => 'true',
+#    ssl      => true,
 #    ssl_cert => '/tmp/server.crt',
 #    ssl_key  => '/tmp/server.pem',
 #  }
@@ -81,17 +83,22 @@ define nginx::resource::vhost (
     'index.html',
     'index.htm',
     'index.php'],
+  $logdir                 = $nginx::params::nx_logdir,
+  $access_log             = "${name}.log",
   $server_name            = [$name],
   $www_root               = undef,
   $rewrite_www_to_non_www = false,
-  $rewrite_to_https 	  = undef,
+  $rewrite_to_https       = undef,
   $location_cfg_prepend   = undef,
   $location_cfg_append    = undef,
+  $no_location_default    = false,
   $try_files              = undef,
   $auth_basic             = undef,
   $auth_basic_user_file   = undef,
+  $vhost_cfg_prepend      = undef,
   $vhost_cfg_append       = undef,
-  $include_files		  = undef
+  $ssl_cfg_prepend        = undef,
+  $include_files          = undef
 ) {
 
   File {
@@ -131,29 +138,30 @@ define nginx::resource::vhost (
     }
   }
 
-  if ($ssl == 'true') and ($ssl_port == $listen_port) {
-    $ssl_only = 'true'
+  if ($ssl == true) and ($ssl_port == $listen_port) {
+    $ssl_only = true
   }
 
-  # Create the default location reference for the vHost
-  nginx::resource::location {"${name}-default":
-    ensure               => $ensure,
-    vhost                => $name,
-    ssl                  => $ssl,
-    ssl_only             => $ssl_only,
-    location             => '/',
-    proxy                => $proxy,
-    proxy_read_timeout   => $proxy_read_timeout,
-    proxy_cache          => $proxy_cache,
-    proxy_cache_valid    => $proxy_cache_valid,
-    fastcgi              => $fastcgi,
-    fastcgi_params       => $fastcgi_params,
-    fastcgi_script       => $fastcgi_script,
-    try_files            => $try_files,
-    www_root             => $www_root,
-    notify               => Class['nginx::service'],
+  if $no_location_default == false {
+    # Create the default location reference for the vHost
+    nginx::resource::location {"${name}-default":
+      ensure               => $ensure,
+      vhost                => $name,
+      ssl                  => $ssl,
+      ssl_only             => $ssl_only,
+      location             => '/',
+      proxy                => $proxy,
+      proxy_read_timeout   => $proxy_read_timeout,
+      proxy_cache          => $proxy_cache,
+      proxy_cache_valid    => $proxy_cache_valid,
+      fastcgi              => $fastcgi,
+      fastcgi_params       => $fastcgi_params,
+      fastcgi_script       => $fastcgi_script,
+      try_files            => $try_files,
+      www_root             => $www_root,
+      notify               => Class['nginx::service'],
+    }
   }
-
   # Support location_cfg_prepend and location_cfg_append on default location created by vhost
   if $location_cfg_prepend {
     Nginx::Resource::Location["${name}-default"] {
@@ -171,7 +179,7 @@ define nginx::resource::vhost (
   }
 
   # Create SSL File Stubs if SSL is enabled
-  if ($ssl == 'true') {
+  if ($ssl == true) {
     file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-700-ssl":
       ensure => $ensure ? {
         'absent' => absent,

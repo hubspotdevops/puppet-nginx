@@ -88,16 +88,17 @@ define nginx::resource::vhost (
   $server_name            = [$name],
   $www_root               = undef,
   $rewrite_www_to_non_www = false,
-  $rewrite_to_https 	  = undef,
+  $rewrite_to_https       = undef,
   $location_cfg_prepend   = undef,
   $location_cfg_append    = undef,
+  $no_location_default    = false,
   $try_files              = undef,
   $auth_basic             = undef,
   $auth_basic_user_file   = undef,
   $vhost_cfg_prepend      = undef,
   $vhost_cfg_append       = undef,
   $ssl_cfg_prepend        = undef,
-  $include_files		  = undef
+  $include_files          = undef
 ) {
 
   File {
@@ -141,25 +142,26 @@ define nginx::resource::vhost (
     $ssl_only = true
   }
 
-  # Create the default location reference for the vHost
-  nginx::resource::location {"${name}-default":
-    ensure               => $ensure,
-    vhost                => $name,
-    ssl                  => $ssl,
-    ssl_only             => $ssl_only,
-    location             => '/',
-    proxy                => $proxy,
-    proxy_read_timeout   => $proxy_read_timeout,
-    proxy_cache          => $proxy_cache,
-    proxy_cache_valid    => $proxy_cache_valid,
-    fastcgi              => $fastcgi,
-    fastcgi_params       => $fastcgi_params,
-    fastcgi_script       => $fastcgi_script,
-    try_files            => $try_files,
-    www_root             => $www_root,
-    notify               => Class['nginx::service'],
+  if $no_location_default == false {
+    # Create the default location reference for the vHost
+    nginx::resource::location {"${name}-default":
+      ensure               => $ensure,
+      vhost                => $name,
+      ssl                  => $ssl,
+      ssl_only             => $ssl_only,
+      location             => '/',
+      proxy                => $proxy,
+      proxy_read_timeout   => $proxy_read_timeout,
+      proxy_cache          => $proxy_cache,
+      proxy_cache_valid    => $proxy_cache_valid,
+      fastcgi              => $fastcgi,
+      fastcgi_params       => $fastcgi_params,
+      fastcgi_script       => $fastcgi_script,
+      try_files            => $try_files,
+      www_root             => $www_root,
+      notify               => Class['nginx::service'],
+    }
   }
-
   # Support location_cfg_prepend and location_cfg_append on default location created by vhost
   if $location_cfg_prepend {
     Nginx::Resource::Location["${name}-default"] {

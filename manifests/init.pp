@@ -83,6 +83,7 @@ class nginx (
   }
 
   class { 'nginx::config':
+<<<<<<< Upstream, based on origin/hsmaster
     worker_processes        => $worker_processes,
     worker_connections      => $worker_connections,
     worker_rlimit_nofile    => $worker_rlimit_nofile,

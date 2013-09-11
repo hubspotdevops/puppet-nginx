@@ -26,6 +26,8 @@ class nginx::config(
   $tcp_nodelay            = $nginx::params::nx_tcp_nodelay,
   $confd_purge            = $nginx::params::nx_confd_purge,
   $server_tokens          = $nginx::params::nx_server_tokens,
+  $client_max_body_size   = $nginx::params::nx_client_max_body_size,
+  $client_body_buffer_size= $nginx::params::nx_client_body_buffer_size,
   $proxy_redirect         = $nginx::params::nx_proxy_redirect,
   $proxy_set_header       = $nginx::params::nx_proxy_set_header,
   $proxy_cache_path       = $nginx::params::nx_proxy_cache_path,

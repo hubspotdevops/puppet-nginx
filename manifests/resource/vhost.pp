@@ -85,6 +85,7 @@ define nginx::resource::vhost (
     'index.php'],
   $logdir                 = $nginx::params::nx_logdir,
   $access_log             = "${name}.log",
+  $ssl_access_log         = "${name}-ssl.log",
   $server_name            = [$name],
   $www_root               = undef,
   $rewrite_www_to_non_www = false,

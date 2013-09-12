@@ -6,6 +6,9 @@ server {
   <% if ipv6_enable == 'true' && (defined? ipaddress6) %>
   listen [<%= ipv6_listen_ip %>]:<%= ipv6_listen_port %> <% if @ipv6_listen_options %><%= ipv6_listen_options %><% end %> ipv6only=on;
   <% end %>
+<% if @access_log -%>
+  access_log            <%= @logdir %>/<%= @ssl_access_log %>;
+<% end %>
   server_name  <%= rewrite_www_to_non_www ? name.gsub(/^www\./, '') : server_name.join(" ") %>;
 
   ssl on;

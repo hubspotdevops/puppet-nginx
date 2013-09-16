@@ -85,7 +85,7 @@ define nginx::resource::vhost (
     'index.php'],
   $logdir                 = $nginx::params::nx_logdir,
   $access_log             = "${name}.log",
-  $ssl_access_log         = "${name}-ssl.log",
+  $ssl_access_log         = undef,
   $server_name            = [$name],
   $www_root               = undef,
   $rewrite_www_to_non_www = false,
@@ -101,6 +101,12 @@ define nginx::resource::vhost (
   $ssl_cfg_prepend        = undef,
   $include_files          = undef
 ) {
+
+  if $ssl_access_log {
+    $real_ssl_access_log = $ssl_access_log
+  } else {
+    $real_ssl_access_log = $access_log
+  }
 
   File {
     ensure => $ensure ? {

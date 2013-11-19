@@ -14,7 +14,6 @@
 #
 # This class file is not called directly
 class nginx::package::redhat ($pkg_version) {
-  $redhat_extra_packages = ['GeoIP', 'gd', 'libXpm', 'libxslt']
 
   if downcase($::operatingsystem) == 'redhat' {
     $os_type = 'rhel'
@@ -37,10 +36,6 @@ class nginx::package::redhat ($pkg_version) {
 
   package { 'nginx':
     ensure  => $pkg_version,
-    require => Yumrepo['nginx-release'],
-  }
-  package { $redhat_extra_packages:
-    ensure  => 'present',
     require => Yumrepo['nginx-release'],
   }
 }

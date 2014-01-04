@@ -1,5 +1,5 @@
 server {
-<% if @ssl_cfg_prepend -%><% ssl_cfg_prepend.each do |key,value| -%>
+<% if @ssl_cfg_prepend -%><% ssl_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
   <%= key %> <%= value %>;
 <% end -%><% end -%>
   listen       <%= listen_ip %>:<%= ssl_port %><% if scope.lookupvar('nginx::params::nx_spdy') == 'on' %> ssl spdy<% end %> <% if @listen_options %><%= listen_options %><% end %>;

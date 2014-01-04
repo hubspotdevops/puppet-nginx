@@ -1,5 +1,5 @@
 server {
-<% if @vhost_cfg_prepend -%><% vhost_cfg_prepend.each do |key,value| -%>
+<% if @vhost_cfg_prepend -%><% vhost_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
   <%= key %> <%= value %>;
 <% end -%><% end -%>
 

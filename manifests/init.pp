@@ -42,7 +42,9 @@ class nginx (
   $configtest_enable      = $nginx::params::nx_configtest_enable,
   $service_restart        = $nginx::params::nx_service_restrart,
   $mail                   = $nginx::params::nx_mail,
-  $server_tokens          = $nginx::params::nx_server_tokens
+  $server_tokens          = $nginx::params::nx_server_tokens,
+  $types_hash_max_size    = $nginx::params::nx_types_hash_max_size,
+  $types_hash_bucket_size = $nginx::params::nx_types_hash_bucket_size
 ) inherits nginx::params {
 
   include stdlib
@@ -52,18 +54,20 @@ class nginx (
   }
 
   class { 'nginx::config':
-    worker_processes      => $worker_processes,
-    worker_connections    => $worker_connections,
-    proxy_set_header      => $proxy_set_header,
-    proxy_http_version    => $proxy_http_version,
-    proxy_cache_path      => $proxy_cache_path,
-    proxy_cache_levels    => $proxy_cache_levels,
-    proxy_cache_keys_zone => $proxy_cache_keys_zone,
-    proxy_cache_max_size  => $proxy_cache_max_size,
-    proxy_cache_inactive  => $proxy_cache_inactive,
-    confd_purge           => $confd_purge,
-    require               => Class['nginx::package'],
-    notify                => Class['nginx::service'],
+    worker_processes       => $worker_processes,
+    worker_connections     => $worker_connections,
+    proxy_set_header       => $proxy_set_header,
+    proxy_http_version     => $proxy_http_version,
+    proxy_cache_path       => $proxy_cache_path,
+    proxy_cache_levels     => $proxy_cache_levels,
+    proxy_cache_keys_zone  => $proxy_cache_keys_zone,
+    proxy_cache_max_size   => $proxy_cache_max_size,
+    proxy_cache_inactive   => $proxy_cache_inactive,
+    confd_purge            => $confd_purge,
+    types_hash_max_size    => types_hash_max_size,
+    types_hash_bucket_size => types_hash_bucket_size,
+    require                => Class['nginx::package'],
+    notify                 => Class['nginx::service'],
   }
 
   class { 'nginx::service':

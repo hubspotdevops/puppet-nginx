@@ -1,31 +1,37 @@
 user <%= scope.lookupvar('nginx::config::nx_daemon_user') %>;
 worker_processes <%= worker_processes %>;
+<% if @worker_rlimit_nofile %>worker_rlimit_nofile <%= worker_rlimit_nofile %>;<% end %>
 
-error_log  <%= scope.lookupvar('nginx::params::nx_logdir')%>/error.log;
+error_log  <%= logdir %>/<%= @error_log %>;
 pid        <%= scope.lookupvar('nginx::params::nx_pid')%>;
 
 events {
   worker_connections <%= worker_connections -%>;
 <% if scope.lookupvar('nginx::params::nx_multi_accept') == 'on' %>multi_accept on;<% end -%>
-<% if scope.lookupvar('nginx::params::nx_events_use') %>use <%= scope.lookupvar('nginx::params::nx_events_use')%>;<% end -%>
+<% if @events_use %>  use <%= events_use %>;<% end %>
 }
 
 http {
   include       /etc/nginx/mime.types;
-  default_type  application/octet-stream;
 
-  access_log  <%= scope.lookupvar('nginx::params::nx_logdir')%>/access.log;
+<% if @http_cfg_prepend -%><% http_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
+  <%= key %> <%= value %><% if key[-1,1] != '}' %>;<% end %>
+<% end -%><% end -%>
+
+  default_type  <%= @default_type %>;
+
+  access_log  <%= logdir %>/<%= @access_log %>;
 
   sendfile    <%= scope.lookupvar('nginx::params::nx_sendfile')%>;
 
   server_tokens <%= server_tokens %>;
-  <% if scope.lookupvar('nginx::params::nx_tcp_nopush') == 'on' %>tcp_nopush on;<% end %>
+  tcp_nopush    <%= @tcp_nopush %>;
 
   types_hash_max_size <%= @types_hash_max_size %>;
   types_hash_bucket_size <%= @types_hash_bucket_size %>;
 
-  keepalive_timeout  <%= scope.lookupvar('nginx::params::nx_keepalive_timeout')%>;
-  tcp_nodelay        <%= scope.lookupvar('nginx::params::nx_tcp_nodelay')%>;
+  keepalive_timeout  <%= @keepalive_timeout %>;
+  tcp_nodelay        <%= @tcp_nodelay %>;
 
   <% if scope.lookupvar('nginx::params::nx_gzip') == 'on' %> 
   gzip         on;
@@ -37,6 +43,11 @@ http {
 <% end -%>
 
   include /etc/nginx/conf.d/*.conf;
+
+<% if @http_cfg_append -%><% http_cfg_append.sort_by {|k,v| k}.each do |key,value| -%>
+  <%= key %> <%= value %><% if key[-1,1] != '}' %>;<% end %>
+<% end -%><% end -%>
+
 }
 <% if scope.lookupvar('nginx::mail') %>
 mail {

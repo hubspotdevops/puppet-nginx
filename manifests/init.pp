@@ -64,8 +64,8 @@ class nginx (
     proxy_cache_max_size   => $proxy_cache_max_size,
     proxy_cache_inactive   => $proxy_cache_inactive,
     confd_purge            => $confd_purge,
-    types_hash_max_size    => types_hash_max_size,
-    types_hash_bucket_size => types_hash_bucket_size,
+    types_hash_max_size    => $types_hash_max_size,
+    types_hash_bucket_size => $types_hash_bucket_size,
     require                => Class['nginx::package'],
     notify                 => Class['nginx::service'],
   }

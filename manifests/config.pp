@@ -42,6 +42,8 @@ class nginx::config(
   $proxy_http_version      = $nginx::params::nx_proxy_http_version,
   $types_hash_max_size     = $nginx::params::nx_types_hash_max_size,
   $types_hash_bucket_size  = $nginx::params::nx_types_hash_bucket_size,
+  $variables_hash_max_size    = $nginx::params::nx_variables_hash_max_size,
+  $variables_hash_bucket_size = $nginx::params::nx_variables_hash_bucket_size,
   $logdir                  = $nginx::params::nx_logdir,
   $access_log              = $nginx::params::nx_access_log,
   $error_log               = $nginx::params::nx_error_log,

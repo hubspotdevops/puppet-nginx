@@ -119,6 +119,7 @@ class nginx (
     logdir                  => $logdir,
     access_log              => $access_log,
     error_log               => $error_log,
+    server_tokens           => $server_tokens,
     nginx_version           => $nginx_version,
     require                 => Class['nginx::package'],
     notify                  => Class['nginx::service'],

@@ -24,7 +24,7 @@ http {
 
   sendfile    <%= scope.lookupvar('nginx::params::nx_sendfile')%>;
 
-  server_tokens <%= server_tokens %>;
+  server_tokens <%= @server_tokens %>;
   tcp_nopush    <%= @tcp_nopush %>;
 
   types_hash_max_size <%= @types_hash_max_size %>;
@@ -35,7 +35,7 @@ http {
   keepalive_timeout  <%= @keepalive_timeout %>;
   tcp_nodelay        <%= @tcp_nodelay %>;
 
-  <% if scope.lookupvar('nginx::params::nx_gzip') == 'on' %> 
+  <% if scope.lookupvar('nginx::params::nx_gzip') == 'on' %>
   gzip         on;
   gzip_disable "MSIE [1-6]\.(?!.*SV1)";
   <% end -%>

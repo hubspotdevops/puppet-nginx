@@ -117,6 +117,7 @@ class nginx (
     types_hash_bucket_size  => $types_hash_bucket_size,
     variables_hash_max_size    => $variables_hash_max_size,
     variables_hash_bucket_size => $variables_hash_bucket_size,
+    multi_accept            => $multi_accept,
     logdir                  => $logdir,
     access_log              => $access_log,
     error_log               => $error_log,

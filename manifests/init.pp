@@ -62,6 +62,7 @@ class nginx (
   $types_hash_bucket_size  = $nginx::params::nx_types_hash_bucket_size,
   $variables_hash_max_size    = $nginx::params::nx_variables_hash_max_size,
   $variables_hash_bucket_size = $nginx::params::nx_variables_hash_bucket_size,
+  $multi_accept            = $nginx::params::nx_multi_accept,
   $logdir                  = $nginx::params::nx_logdir,
   $access_log              = $nginx::params::nx_access_log,
   $error_log               = $nginx::params::nx_error_log,

@@ -1,26 +1,26 @@
 user <%= scope.lookupvar('nginx::config::nx_daemon_user') %>;
-worker_processes <%= worker_processes %>;
-<% if @worker_rlimit_nofile %>worker_rlimit_nofile <%= worker_rlimit_nofile %>;<% end %>
+worker_processes <%= @worker_processes %>;
+<% if @worker_rlimit_nofile %>worker_rlimit_nofile <%= @worker_rlimit_nofile %>;<% end %>
 
-error_log  <%= logdir %>/<%= @error_log %>;
+error_log  <%= @logdir %>/<%= @error_log %>;
 pid        <%= scope.lookupvar('nginx::params::nx_pid')%>;
 
 events {
   worker_connections <%= worker_connections -%>;
 <% if @multi_accept == 'on' %>multi_accept on;<% end %>
-<% if @events_use %>  use <%= events_use %>;<% end %>
+<% if @events_use %>  use <%= @events_use %>;<% end %>
 }
 
 http {
   include       /etc/nginx/mime.types;
 
-<% if @http_cfg_prepend -%><% http_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
+<% if @http_cfg_prepend -%><% @http_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
   <%= key %> <%= value %><% if key[-1,1] != '}' %>;<% end %>
 <% end -%><% end -%>
 
   default_type  <%= @default_type %>;
 
-  access_log  <%= logdir %>/<%= @access_log %>;
+  access_log  <%= @logdir %>/<%= @access_log %>;
 
   sendfile    <%= scope.lookupvar('nginx::params::nx_sendfile')%>;
 
@@ -40,8 +40,8 @@ http {
   gzip_disable "MSIE [1-6]\.(?!.*SV1)";
   <% end -%>
 
-<% if proxy_cache_path -%>
-  proxy_cache_path    <%= proxy_cache_path %> levels=<%= proxy_cache_levels %> keys_zone=<%= proxy_cache_keys_zone %> max_size=<%= proxy_cache_max_size %> inactive=<%= proxy_cache_inactive %>;
+<% if @proxy_cache_path -%>
+  proxy_cache_path    <%= @proxy_cache_path %> levels=<%= @proxy_cache_levels %> keys_zone=<%= @proxy_cache_keys_zone %> max_size=<%= @proxy_cache_max_size %> inactive=<%= @proxy_cache_inactive %>;
 <% end -%>
 
   include /etc/nginx/conf.d/*.conf;

@@ -19,9 +19,9 @@ server {
   ssl_protocols             TLSv1 TLSv1.1 TLSv1.2;
   ssl_prefer_server_ciphers on;
 
-<% if @auth_basic != :undef -%>
+<% if !@auth_basic.nil? -%>
   auth_basic                "<%= @auth_basic %>";
 <% end -%>
-<% if @auth_basic_user_file != :undef -%>
+<% if !@auth_basic_user_file.nil? -%>
   auth_basic_user_file      <%= @auth_basic_user_file %>;
 <% end -%>

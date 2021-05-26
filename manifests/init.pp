@@ -66,13 +66,15 @@ class nginx (
   $logdir                  = $nginx::params::nx_logdir,
   $access_log              = $nginx::params::nx_access_log,
   $error_log               = $nginx::params::nx_error_log,
-  $pkg_version             = $nginx::params::nx_pkg_version
+  $pkg_version             = $nginx::params::nx_pkg_version,
+  $manage_repo             = $nginx::params::nx_manage_repo
 ) inherits nginx::params {
 
   include stdlib
 
   class { 'nginx::package':
     pkg_version => $pkg_version,
+    manage_repo => $manage_repo,
     notify => Class['nginx::service'],
   }
 

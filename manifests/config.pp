@@ -48,7 +48,8 @@ class nginx::config(
   $logdir                  = $nginx::params::nx_logdir,
   $access_log              = $nginx::params::nx_access_log,
   $error_log               = $nginx::params::nx_error_log,
-  $nginx_version           = $nginx::params::nx_nginx_version
+  $nginx_version           = $nginx::params::nx_nginx_version,
+  $manage_repo             = $nginx::params::nx_manage_repo
 ) inherits nginx::params {
   File {
     owner => 'root',

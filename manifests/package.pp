@@ -13,7 +13,11 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package ($pkg_version) {
+class nginx::package (
+  $pkg_version,
+  $manage_repo
+) {
+
   anchor { 'nginx::package::begin': }
   anchor { 'nginx::package::end': }
 
@@ -21,6 +25,7 @@ class nginx::package ($pkg_version) {
     centos,fedora,rhel,redhat,scientific: {
       class { 'nginx::package::redhat':
         pkg_version => $pkg_version,
+        manage_repo => $manage_repo,
         require => Anchor['nginx::package::begin'],
         before  => Anchor['nginx::package::end'],
       }
